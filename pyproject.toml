@@ -1,0 +1,26 @@
+[project]
+name = "alice"
+version = "0.1.0"
+description = "AI-powered Command Line Tool"
+authors = [
+    {name = "CT Wu"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "autogen-agentchat (>=0.5.5,<0.6.0)",
+    "autogen-ext[openai] (>=0.5.5,<0.6.0)",
+    "dotenv (>=0.9.9,<0.10.0)"
+]
+package-mode = false
+
+[tool.poetry]
+
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^6.13.0"
+pytest = "^8.3.5"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
