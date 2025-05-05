@@ -3,8 +3,9 @@ import os
 
 def setup_logging():
     logger = logging.getLogger('alice')
-    log_level = os.getenv('ALICE_LOG_LEVEL', 'DEBUG').upper()
-    logger.setLevel(getattr(logging, log_level, logging.DEBUG))
+    from config import current_config
+    log_level = current_config['ALICE_LOG_LEVEL']
+    logger.setLevel(log_level)
 
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 

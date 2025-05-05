@@ -13,8 +13,15 @@ DEFAULT_CONFIG = {
     "ALICE_LOG_LEVEL": "INFO"
 }
 
+_config_cache: Dict[str, Any] = None  # 用來快取設定
+
+
 def load_config() -> Dict[str, Any]:
     """載入設定，優先順序: 1.本地.env 2.家目錄.env 3.環境變數 4.預設值"""
+    global _config_cache
+    if _config_cache is not None:
+        return _config_cache
+
     config = DEFAULT_CONFIG.copy()
 
     # 1. 載入本地 .env (專案根目錄)
@@ -29,12 +36,13 @@ def load_config() -> Dict[str, Any]:
 
     # 3. 從環境變數更新設定
     for key in DEFAULT_CONFIG:
-        # 檢查新舊格式的環境變數名稱
         env_value = os.getenv(key)
         if env_value is not None:
             config[key] = env_value
 
+    _config_cache = config
     return config
+
 
 # 模組載入時自動讀取設定
 current_config = load_config()
