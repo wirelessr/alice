@@ -6,6 +6,7 @@ from autogen_agentchat.conditions import TextMentionTermination, MaxMessageTermi
 from autogen_agentchat.teams import RoundRobinGroupChat
 from autogen_agentchat.ui import Console
 from log import setup_logging
+from config import current_config
 
 # 初始化專案專用logger
 logger = setup_logging()
@@ -27,11 +28,22 @@ async def async_delete(pattern):
 async def main():
     try:
         if len(sys.argv) < 2:
-            logger.error("Usage: python main.py <task>")
-            logger.error("範例: python main.py 找出當下目錄最大的檔案")
+            print("Usage: python main.py <task>")
+            print("範例: python main.py 找出當下目錄最大的檔案")
             return
         task = " ".join(sys.argv[1:])
-        await Console(team.run_stream(task=task))
+
+        silent_mode = current_config["ALICE_SILENT_MODE"]
+        if not silent_mode:
+            await Console(team.run_stream(task=task))
+        else:
+            ret = await team.run(task=task)
+            final_msg = ret.messages[-1].content
+            if "TERMINATE" in final_msg:
+                command_result = ret.messages[-2].content
+                print(command_result)
+            else:
+                print("Something went wrong!")
     finally:
         await async_delete("tmp_code_*.sh")
 

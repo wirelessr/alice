@@ -10,7 +10,8 @@ DEFAULT_CONFIG = {
     "ALICE_TIMEOUT": 30,
     "ALICE_RETRIES": 3,
     "ALICE_BASE_URL": "https://openrouter.ai/api/v1",
-    "ALICE_LOG_LEVEL": "INFO"
+    "ALICE_LOG_LEVEL": "INFO",
+    "ALICE_SILENT_MODE": False
 }
 
 _config_cache: Dict[str, Any] = None  # 用來快取設定
@@ -38,7 +39,11 @@ def load_config() -> Dict[str, Any]:
     for key in DEFAULT_CONFIG:
         env_value = os.getenv(key)
         if env_value is not None:
-            config[key] = env_value
+            # 特殊處理布林值設定
+            if key == "ALICE_SILENT_MODE":
+                config[key] = env_value.lower() in ("true", "1", "yes", "on", "y")
+            else:
+                config[key] = env_value
 
     _config_cache = config
     return config
