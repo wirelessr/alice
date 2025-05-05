@@ -61,12 +61,12 @@ Alice needs your AI service credentials and optional settings. You can set them 
 
 Supported variables:
 
-| Variable         | Description                                 |
-| ---------------- | ------------------------------------------- |
-| `ALICE_API_KEY`  | Your OpenAI or compatible API key           |
-| `ALICE_BASE_URL` | Endpoint URL for your AI service (optional) |
-| `ALICE_MODEL`    | Model name to use (e.g. `gpt-4`)            |
-| `LOG_LEVEL`      | (optional) `DEBUG`, `INFO`, `WARN`, `ERROR` |
+| Variable          | Description                                 |
+| ----------------- | ------------------------------------------- |
+| `ALICE_API_KEY`   | Your OpenAI or compatible API key           |
+| `ALICE_BASE_URL`  | Endpoint URL for your AI service (optional) |
+| `ALICE_MODEL`     | Model name to use (e.g. `gpt-4`)            |
+| `ALICE_LOG_LEVEL` | (optional) `DEBUG`, `INFO`, `WARN`, `ERROR` |
 
 ---
 

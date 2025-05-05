@@ -1,4 +1,3 @@
-import os
 import glob
 import asyncio
 import aiofiles.os

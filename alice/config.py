@@ -9,7 +9,8 @@ DEFAULT_CONFIG = {
     "ALICE_API_KEY": None, # "your-api-key-here"
     "ALICE_TIMEOUT": 30,
     "ALICE_RETRIES": 3,
-    "ALICE_BASE_URL": "https://openrouter.ai/api/v1"
+    "ALICE_BASE_URL": "https://openrouter.ai/api/v1",
+    "ALICE_LOG_LEVEL": "INFO"
 }
 
 def load_config() -> Dict[str, Any]:
