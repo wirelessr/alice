@@ -20,10 +20,10 @@ team = RoundRobinGroupChat([planning_agent, execution_agent, verification_agent]
 async def async_delete(pattern):
     loop = asyncio.get_running_loop()
     file_list = await loop.run_in_executor(None, glob.glob, pattern)
-    logger.debug(f"Found files: {file_list}")
-    for file_path in file_list:
-        logger.debug(f"Removing {file_path}")
-        await aiofiles.os.remove(file_path)
+    logger.debug(f"Found files:  {file_list}")
+    if file_list:
+        logger.debug(f"Removing {len(file_list)} files")
+        await asyncio.gather(*[aiofiles.os.remove(file_path) for file_path in file_list])
 
 async def main():
     try:
