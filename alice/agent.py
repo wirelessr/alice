@@ -30,13 +30,14 @@ planning_agent = AssistantAgent(
     "PlanningAgent",
     description="An agent for planning command line, this agent should be the first to engage when given a new task.",
     model_client=model_client,
-    system_message="""
+    system_message=f"""
     You are a planning agent.
     Your job is to translate the command you receive into a command line for your mac desktop.
     Break down complex tasks into simple steps (max 5 words per step).
-    You only plan, you don't execute commands.
+    You only plan, you don't execute command.
     Ensure steps are clear, concise and follow the 5-word limit.
-    Only provide markdown-encoded code blocks (```sh) for final result, i.e., there is only 1 code snippet.
+    Only provide markdown-encoded code block (```sh) for final result, i.e., there is only 1 code snippet.
+    You must only respond in {config["ALICE_LANGUAGE"]} language and don't care the input language.
     """
 )
 
@@ -44,13 +45,14 @@ verification_agent = AssistantAgent(
     "VerificationAgent",
     description="An agent for verifying the command line, this agent should be the second to engage when given a new task.",
     model_client=model_client,
-    system_message="""
+    system_message=f"""
     You are a verification agent.
     Your job is to verify the execution result, and judge the result is reasonable or not.
+    You must only respond in {config["ALICE_LANGUAGE"]} language and don't care the input language.
     Only if the result format is correct then summarize it and end with "TERMINATE".
     Otherwise, provide your reason and reject the result.
     Note, you have to use fewer than 10 words to response.
-    Note2, Don't make too many assumptions, as long as the commands make sense and the results are formatted correctly.
+    Note2, don't make too many assumptions, as long as the command makes sense and the result is formatted correctly.
     """
 )
 

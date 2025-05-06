@@ -68,6 +68,7 @@ Supported variables:
 | `ALICE_MODEL`       | Model name to use (e.g. `gpt-4`)                                                  |
 | `ALICE_LOG_LEVEL`   | (optional) `DEBUG`, `INFO`, `WARN`, `ERROR`                                       |
 | `ALICE_SILENT_MODE` | (optional) `true`/`false` - Hide agent interactions, only show command and result |
+| `ALICE_LANGUAGE`    | (optional) Response language code (e.g. "zh-TW", "en-US") - Default: "zh-TW"      |
 
 ---
 
