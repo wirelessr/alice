@@ -41,7 +41,7 @@ jobs:
           poetry run pyinstaller alice/main.py --name alice_${{ matrix.target }}_${{ matrix.arch }} --onefile
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: alice-${{ matrix.target }}-${{ matrix.arch }}
           path: dist/alice_${{ matrix.target }}_${{ matrix.arch }}
