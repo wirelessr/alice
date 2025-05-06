@@ -69,6 +69,7 @@ Supported variables:
 | `ALICE_LOG_LEVEL`   | (optional) `DEBUG`, `INFO`, `WARN`, `ERROR`                                       |
 | `ALICE_SILENT_MODE` | (optional) `true`/`false` - Hide agent interactions, only show command and result |
 | `ALICE_LANGUAGE`    | (optional) Response language code (e.g. "zh-TW", "en-US") - Default: "zh-TW"      |
+| `ALICE_DEVICE_TYPE` | (optional) Device type (e.g. "macos", "windows", "linux") - Default: "macos"      |
 
 ---
 

@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 # 預設設定值
 DEFAULT_CONFIG = {
     "ALICE_MODEL": "default",
+    "ALICE_DEVICE_TYPE": "macos",  # 指定運行設備類型
     "ALICE_LANGUAGE": "zh-TW",  # 指定代理的響應語言
     "ALICE_API_KEY": None, # "your-api-key-here"
     "ALICE_TIMEOUT": 30,
