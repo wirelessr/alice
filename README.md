@@ -142,10 +142,10 @@ Result:
   Verify that your `ALICE_MODEL` are correctly configured.
 
 - **Logging**
-  Set `LOG_LEVEL=DEBUG` for verbose logs:
+  Set `ALICE_LOG_LEVEL=DEBUG` for verbose logs:
 
 ```bash
-export LOG_LEVEL=DEBUG
+export ALICE_LOG_LEVEL=DEBUG
 alice "…"
 ```
 
