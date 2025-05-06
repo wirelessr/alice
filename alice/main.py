@@ -1,3 +1,4 @@
+import sys
 import glob
 import asyncio
 import aiofiles.os
@@ -48,6 +49,4 @@ async def main():
         await async_delete("tmp_code_*.sh")
 
 if __name__ == "__main__":
-    import asyncio
-    import sys
     asyncio.run(main())
