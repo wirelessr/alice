@@ -31,7 +31,7 @@ async def main():
         if len(sys.argv) < 2:
             print("Usage: python main.py <task>")
             print("範例: python main.py 找出當下目錄最大的檔案")
-            return
+            sys.exit(1)
         task = " ".join(sys.argv[1:])
 
         silent_mode = current_config["ALICE_SILENT_MODE"]
@@ -45,6 +45,7 @@ async def main():
                 print(command_result)
             else:
                 print("Something went wrong!")
+                sys.exit(2)
     finally:
         await async_delete("tmp_code_*.sh")
 
