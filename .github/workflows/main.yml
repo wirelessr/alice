@@ -1,0 +1,68 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # e.g., v1.0.0
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: linux
+            arch: amd64
+          - os: macos-latest
+            target: macos
+            arch: arm64
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: poetry install --only main,dev
+
+      - name: Build executable with PyInstaller
+        run: |
+          poetry run pyinstaller alice/main.py --name alice_${{ matrix.target }}_${{ matrix.arch }} --onefile
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: alice-${{ matrix.target }}-${{ matrix.arch }}
+          path: dist/alice_${{ matrix.target }}_${{ matrix.arch }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: ./dist
+
+      - name: Display structure of downloaded files
+        run: ls -R ./dist
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/**/alice_*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
