@@ -5,7 +5,7 @@ from autogen_agentchat.agents import AssistantAgent, CodeExecutorAgent
 from autogen_ext.code_executors.local import LocalCommandLineCodeExecutor
 from config import load_config
 
-# 載入設定
+# Load configuration
 config = load_config()
 
 model_info = ModelInfo(
@@ -17,7 +17,7 @@ model_info = ModelInfo(
 )
 
 if not config.get("ALICE_API_KEY"):
-    raise ValueError("請在 ~/.alice/.env 或環境變數中設定 ALICE_API_KEY")
+    raise ValueError("Please set ALICE_API_KEY in ~/.alice/.env or environment variables")
 
 model_client = OpenAIChatCompletionClient(
     model=config["ALICE_MODEL"],

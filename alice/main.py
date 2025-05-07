@@ -9,7 +9,7 @@ from autogen_agentchat.ui import Console
 from log import setup_logging
 from config import current_config
 
-# 初始化專案專用logger
+# Initialize project-specific logger
 logger = setup_logging()
 
 text_mention_termination = TextMentionTermination("TERMINATE")
@@ -30,7 +30,7 @@ async def main():
     try:
         if len(sys.argv) < 2:
             print("Usage: python main.py <task>")
-            print("範例: python main.py 找出當下目錄最大的檔案")
+            print("Example: python main.py Find the largest file in the current directory")
             sys.exit(1)
         task = " ".join(sys.argv[1:])
 
