@@ -25,6 +25,7 @@ def parse_cli_args():
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("-s", "--silent", action="store_true", help="Enable silent mode")
     parser.add_argument("-i", "--interactive", action="store_true", help="Enable interactive (human-in-the-loop) mode")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose mode (force disable silent mode)")
     # Add more options here if needed
     args, _ = parser.parse_known_args(sys.argv[1:])
     return args
@@ -72,6 +73,9 @@ def load_config() -> Dict[str, Any]:
         config["ALICE_SILENT_MODE"] = True
     if getattr(args, "interactive", False):
         config["ALICE_INTERACTIVE_MODE"] = True
+        config["ALICE_SILENT_MODE"] = False  # Interactive mode disables silent mode
+    if getattr(args, "verbose", False):
+        config["ALICE_SILENT_MODE"] = False  # Verbose mode disables silent mode
     # Add more CLI overrides here if needed
 
     _config_cache = config

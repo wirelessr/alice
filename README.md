@@ -70,6 +70,7 @@ Supported variables:
 | `ALICE_SILENT_MODE` | (optional) `true`/`false` - Hide agent interactions, only show command and result |
 | `ALICE_LANGUAGE`    | (optional) Response language code (e.g. "zh-TW", "en-US") - Default: "zh-TW"      |
 | `ALICE_DEVICE_TYPE` | (optional) Device type (e.g. "macos", "windows", "linux") - Default: "macos"      |
+| `ALICE_INTERACTIVE_MODE` | (optional) true/false - Enable interactive (human-in-the-loop) mode |
 
 ### Command line options
 
@@ -77,6 +78,7 @@ Supported variables:
 |-------------------|---------------------|---------|--------------------------------------------------|
 | `-s`, `--silent`  | `ALICE_SILENT_MODE` | boolean | Enable silent mode (hide agent interaction)       |
 | `-i`, `--interactive` | `ALICE_INTERACTIVE_MODE` | boolean | Enable interactive (human-in-the-loop) mode |
+| `-v`, `--verbose` |  | boolean | Enable verbose mode (force disable silent mode) |
 
 ---
 
