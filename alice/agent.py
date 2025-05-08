@@ -42,9 +42,11 @@ planning_agent = AssistantAgent(
 )
 
 if config.get("ALICE_INTERACTIVE_MODE"):
+    def input_with_terminate_hint(prompt):
+        return input("Please enter your response (end with 'TERMINATE' if correct): ")
     verification_agent = UserProxyAgent(
         "VerificationAgent",
-        input_func=input,
+        input_func=input_with_terminate_hint,
         description="A human-in-the-loop agent for verifying the command line."
     )
 else:
