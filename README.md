@@ -76,6 +76,7 @@ Supported variables:
 | Option            | Env Variable         | Type    | Description                                      |
 |-------------------|---------------------|---------|--------------------------------------------------|
 | `-s`, `--silent`  | `ALICE_SILENT_MODE` | boolean | Enable silent mode (hide agent interaction)       |
+| `-i`, `--interactive` | `ALICE_INTERACTIVE_MODE` | boolean | Enable interactive (human-in-the-loop) mode |
 
 ---
 

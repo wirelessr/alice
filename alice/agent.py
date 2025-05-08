@@ -1,7 +1,7 @@
 import os
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_core.models import ModelInfo
-from autogen_agentchat.agents import AssistantAgent, CodeExecutorAgent
+from autogen_agentchat.agents import AssistantAgent, CodeExecutorAgent, UserProxyAgent
 from autogen_ext.code_executors.local import LocalCommandLineCodeExecutor
 from config import load_config
 
@@ -41,20 +41,27 @@ planning_agent = AssistantAgent(
     """
 )
 
-verification_agent = AssistantAgent(
-    "VerificationAgent",
-    description="An agent for verifying the command line, this agent should be the second to engage when given a new task.",
-    model_client=model_client,
-    system_message=f"""
-    You are a verification agent.
-    Your job is to verify the execution result, and judge the result is reasonable or not.
-    You must respond in {config["ALICE_LANGUAGE"]} language.
-    Only if the result format is correct then summarize it and end with "TERMINATE".
-    Otherwise, provide your reason and reject the result.
-    Note, you have to use fewer than 10 words to response.
-    Note2, don't make too many assumptions, as long as the command makes sense and the result is formatted correctly.
-    """
-)
+if config.get("ALICE_INTERACTIVE_MODE"):
+    verification_agent = UserProxyAgent(
+        "VerificationAgent",
+        input_func=input,
+        description="A human-in-the-loop agent for verifying the command line."
+    )
+else:
+    verification_agent = AssistantAgent(
+        "VerificationAgent",
+        description="An agent for verifying the command line, this agent should be the second to engage when given a new task.",
+        model_client=model_client,
+        system_message=f"""
+        You are a verification agent.
+        Your job is to verify the execution result, and judge the result is reasonable or not.
+        You must respond in {config["ALICE_LANGUAGE"]} language.
+        Only if the result format is correct then summarize it and end with "TERMINATE".
+        Otherwise, provide your reason and reject the result.
+        Note, you have to use fewer than 10 words to response.
+        Note2, don't make too many assumptions, as long as the command makes sense and the result is formatted correctly.
+        """
+    )
 
 execution_agent = CodeExecutorAgent(
     "ExecutionAgent",
