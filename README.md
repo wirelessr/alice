@@ -71,6 +71,12 @@ Supported variables:
 | `ALICE_LANGUAGE`    | (optional) Response language code (e.g. "zh-TW", "en-US") - Default: "zh-TW"      |
 | `ALICE_DEVICE_TYPE` | (optional) Device type (e.g. "macos", "windows", "linux") - Default: "macos"      |
 
+### Command line options
+
+| Option            | Env Variable         | Type    | Description                                      |
+|-------------------|---------------------|---------|--------------------------------------------------|
+| `-s`, `--silent`  | `ALICE_SILENT_MODE` | boolean | Enable silent mode (hide agent interaction)       |
+
 ---
 
 ## Usage
@@ -79,6 +85,12 @@ Run Alice with a natural-language instruction. For example:
 
 ```bash
 alice Find the largest file in the current directory
+```
+
+You can also use command line options to override config. For example, to enable silent mode:
+
+```bash
+alice -s Find the largest file in the current directory
 ```
 
 Alice will then:
@@ -135,10 +147,10 @@ Result:
 
 ## Troubleshooting
 
-- **“API key not found”**
+- **"API key not found"**
   Ensure `ALICE_API_KEY` is set in `~/.alice/.env` or as an env var.
 
-- **“Model not available”**
+- **"Model not available"**
   Verify that your `ALICE_MODEL` are correctly configured.
 
 - **Logging**

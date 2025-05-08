@@ -1,7 +1,9 @@
 import os
+import sys
 from pathlib import Path
 from typing import Dict, Any
 from dotenv import load_dotenv
+import argparse
 
 # Default configuration settings
 DEFAULT_CONFIG = {
@@ -18,13 +20,22 @@ DEFAULT_CONFIG = {
 
 _config_cache: Dict[str, Any] = None  # Cache for configuration
 
+def parse_cli_args():
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("-s", "--silent", action="store_true", help="Enable silent mode")
+    # Add more options here if needed
+    args, _ = parser.parse_known_args(sys.argv[1:])
+    return args
 
 def load_config() -> Dict[str, Any]:
-    """Load configuration with priority:
-    1. Local .env
-    2. Home directory .env
-    3. Environment variables
-    4. Default values"""
+    """
+    Load configuration with priority:
+    1. Command line options
+    2. Local .env
+    3. Home directory .env
+    4. Environment variables
+    5. Default values
+    """
     global _config_cache
     if _config_cache is not None:
         return _config_cache
@@ -51,9 +62,14 @@ def load_config() -> Dict[str, Any]:
             else:
                 config[key] = env_value
 
+    # 4. Override with command line arguments (highest priority)
+    args = parse_cli_args()
+    if getattr(args, "silent", False):
+        config["ALICE_SILENT_MODE"] = True
+    # Add more CLI overrides here if needed
+
     _config_cache = config
     return config
-
 
 # Automatically load configuration when module is loaded
 current_config = load_config()
