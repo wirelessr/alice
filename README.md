@@ -72,6 +72,7 @@ Supported variables:
 | `ALICE_DEVICE_TYPE` | (optional) Device type (e.g. "macos", "windows", "linux") - Default: "macos"      |
 | `ALICE_INTERACTIVE_MODE` | (optional) true/false - Enable interactive (human-in-the-loop) mode |
 | `ALICE_PERSISTENT_MODE` | (optional) true/false - Enable persistent mode (cache results) |
+| `ALICE_CACHE_SIZE` | (optional) int (MB) - Persistent cache size in MB (default: 500) |
 
 ### Command line options
 

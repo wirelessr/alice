@@ -3,7 +3,7 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_core.models import ModelInfo
 from autogen_agentchat.agents import AssistantAgent, CodeExecutorAgent, UserProxyAgent
 from autogen_ext.code_executors.local import LocalCommandLineCodeExecutor
-from config import load_config
+from config import load_config, ALICE_HOME
 from autogen_ext.models.cache import ChatCompletionCache
 from autogen_ext.cache_store.diskcache import DiskCacheStore
 from diskcache import Cache
@@ -31,7 +31,8 @@ openai_model_client = OpenAIChatCompletionClient(
 
 # Persistent mode: wrap with ChatCompletionCache
 if config.get("ALICE_PERSISTENT_MODE"):
-    cache_store = DiskCacheStore(Cache(".alice_cache"))
+    cache_size_bytes = config["ALICE_CACHE_SIZE"] * 1024 * 1024
+    cache_store = DiskCacheStore(Cache(ALICE_HOME, size_limit=cache_size_bytes))
     model_client = ChatCompletionCache(openai_model_client, cache_store)
 else:
     model_client = openai_model_client

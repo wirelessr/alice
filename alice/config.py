@@ -5,7 +5,11 @@ from typing import Dict, Any
 from dotenv import load_dotenv
 import argparse
 
+# Define ALICE_HOME directory
+ALICE_HOME = str(Path.home() / ".alice")
+
 # Default configuration settings
+default_env_path = str(Path(ALICE_HOME) / ".env")
 DEFAULT_CONFIG = {
     "ALICE_MODEL": "default",
     "ALICE_DEVICE_TYPE": "macos",  # Specify the device type to run on
@@ -17,7 +21,8 @@ DEFAULT_CONFIG = {
     "ALICE_LOG_LEVEL": "INFO",
     "ALICE_SILENT_MODE": False,
     "ALICE_INTERACTIVE_MODE": False,
-    "ALICE_PERSISTENT_MODE": False
+    "ALICE_PERSISTENT_MODE": False,
+    "ALICE_CACHE_SIZE": 500  # MB
 }
 
 _config_cache: Dict[str, Any] = None  # Cache for configuration
@@ -52,8 +57,8 @@ def load_config() -> Dict[str, Any]:
     if local_env.exists():
         load_dotenv(local_env)
 
-    # 2. Load home directory .env (~/alice/.env)
-    home_env = Path.home() / ".alice" / ".env"
+    # 2. Load home directory .env ($HOME/.alice/.env)
+    home_env = Path(ALICE_HOME) / ".env"
     if home_env.exists():
         load_dotenv(home_env)
 
@@ -83,6 +88,9 @@ def load_config() -> Dict[str, Any]:
     if getattr(args, "persistent", False):
         config["ALICE_PERSISTENT_MODE"] = True
     # Add more CLI overrides here if needed
+
+    # 強制轉型 ALICE_CACHE_SIZE
+    config["ALICE_CACHE_SIZE"] = int(config["ALICE_CACHE_SIZE"])
 
     _config_cache = config
     return config
