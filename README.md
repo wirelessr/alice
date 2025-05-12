@@ -167,6 +167,13 @@ export ALICE_LOG_LEVEL=DEBUG
 alice "…"
 ```
 
+- **macOS: "Apple cannot check for malicious software"**
+  If you see a Gatekeeper warning when running the binary, run:
+  ```bash
+  xattr -d com.apple.quarantine ./alice
+  ```
+  This will remove the quarantine flag and allow execution.
+
 ---
 
 ## Contributing
