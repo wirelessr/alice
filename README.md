@@ -71,6 +71,7 @@ Supported variables:
 | `ALICE_LANGUAGE`    | (optional) Response language code (e.g. "zh-TW", "en-US") - Default: "zh-TW"      |
 | `ALICE_DEVICE_TYPE` | (optional) Device type (e.g. "macos", "windows", "linux") - Default: "macos"      |
 | `ALICE_INTERACTIVE_MODE` | (optional) true/false - Enable interactive (human-in-the-loop) mode |
+| `ALICE_PERSISTENT_MODE` | (optional) true/false - Enable persistent mode (cache results) |
 
 ### Command line options
 
@@ -79,6 +80,7 @@ Supported variables:
 | `-s`, `--silent`  | `ALICE_SILENT_MODE` | boolean | Enable silent mode (hide agent interaction)       |
 | `-i`, `--interactive` | `ALICE_INTERACTIVE_MODE` | boolean | Enable interactive (human-in-the-loop) mode |
 | `-v`, `--verbose` |  | boolean | Enable verbose mode (force disable silent mode) |
+| `-p`, `--persistent` | `ALICE_PERSISTENT_MODE` | boolean | Enable persistent mode (cache results) |
 
 ---
 

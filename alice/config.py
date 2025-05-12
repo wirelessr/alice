@@ -16,7 +16,8 @@ DEFAULT_CONFIG = {
     "ALICE_BASE_URL": "https://openrouter.ai/api/v1",
     "ALICE_LOG_LEVEL": "INFO",
     "ALICE_SILENT_MODE": False,
-    "ALICE_INTERACTIVE_MODE": False
+    "ALICE_INTERACTIVE_MODE": False,
+    "ALICE_PERSISTENT_MODE": False
 }
 
 _config_cache: Dict[str, Any] = None  # Cache for configuration
@@ -26,6 +27,7 @@ def parse_cli_args():
     parser.add_argument("-s", "--silent", action="store_true", help="Enable silent mode")
     parser.add_argument("-i", "--interactive", action="store_true", help="Enable interactive (human-in-the-loop) mode")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose mode (force disable silent mode)")
+    parser.add_argument("-p", "--persistent", action="store_true", help="Enable persistent mode (cache results)")
     # Add more options here if needed
     args, _ = parser.parse_known_args(sys.argv[1:])
     return args
@@ -64,6 +66,8 @@ def load_config() -> Dict[str, Any]:
                 config[key] = env_value.lower() in ("true", "1", "yes", "on", "y")
             elif key == "ALICE_INTERACTIVE_MODE":
                 config[key] = env_value.lower() in ("true", "1", "yes", "on", "y")
+            elif key == "ALICE_PERSISTENT_MODE":
+                config[key] = env_value.lower() in ("true", "1", "yes", "on", "y")
             else:
                 config[key] = env_value
 
@@ -76,6 +80,8 @@ def load_config() -> Dict[str, Any]:
         config["ALICE_SILENT_MODE"] = False  # Interactive mode disables silent mode
     if getattr(args, "verbose", False):
         config["ALICE_SILENT_MODE"] = False  # Verbose mode disables silent mode
+    if getattr(args, "persistent", False):
+        config["ALICE_PERSISTENT_MODE"] = True
     # Add more CLI overrides here if needed
 
     _config_cache = config
