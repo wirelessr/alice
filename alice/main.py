@@ -2,12 +2,12 @@ import sys
 import glob
 import asyncio
 import aiofiles.os
-from agent import planning_agent, verification_agent, execution_agent
+from alice.agent import planning_agent, verification_agent, execution_agent
 from autogen_agentchat.conditions import TextMentionTermination, MaxMessageTermination
 from autogen_agentchat.teams import RoundRobinGroupChat
 from autogen_agentchat.ui import Console
-from log import setup_logging
-from config import current_config
+from alice.log import setup_logging
+from alice.config import current_config
 
 # Initialize project-specific logger
 logger = setup_logging()

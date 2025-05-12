@@ -3,7 +3,7 @@ import os
 
 def setup_logging():
     logger = logging.getLogger('alice')
-    from config import current_config
+    from alice.config import current_config
     log_level = current_config['ALICE_LOG_LEVEL']
     logger.setLevel(log_level)
 
@@ -14,17 +14,10 @@ def setup_logging():
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(formatter)
 
-    # Set file handler
-    log_file = os.path.join(os.path.dirname(__file__), 'alice.log')
-    fh = logging.FileHandler(log_file)
-    fh.setLevel(logging.DEBUG)
-    fh.setFormatter(formatter)
-
     # Remove all existing handlers
     logger.handlers = []
 
-    # Add new handlers
+    # Add new handler (console only)
     logger.addHandler(ch)
-    logger.addHandler(fh)
 
     return logger

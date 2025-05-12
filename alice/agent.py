@@ -3,7 +3,7 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_core.models import ModelInfo
 from autogen_agentchat.agents import AssistantAgent, CodeExecutorAgent, UserProxyAgent
 from autogen_ext.code_executors.local import LocalCommandLineCodeExecutor
-from config import load_config, ALICE_HOME
+from alice.config import load_config, ALICE_HOME
 from autogen_ext.models.cache import ChatCompletionCache
 from autogen_ext.cache_store.diskcache import DiskCacheStore
 from diskcache import Cache
