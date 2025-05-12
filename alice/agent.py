@@ -4,6 +4,9 @@ from autogen_core.models import ModelInfo
 from autogen_agentchat.agents import AssistantAgent, CodeExecutorAgent, UserProxyAgent
 from autogen_ext.code_executors.local import LocalCommandLineCodeExecutor
 from config import load_config
+from autogen_ext.models.cache import ChatCompletionCache
+from autogen_ext.cache_store.diskcache import DiskCacheStore
+from diskcache import Cache
 
 # Load configuration
 config = load_config()
@@ -19,12 +22,19 @@ model_info = ModelInfo(
 if not config.get("ALICE_API_KEY"):
     raise ValueError("Please set ALICE_API_KEY in ~/.alice/.env or environment variables")
 
-model_client = OpenAIChatCompletionClient(
+openai_model_client = OpenAIChatCompletionClient(
     model=config["ALICE_MODEL"],
     api_key=config["ALICE_API_KEY"],
     base_url=config["ALICE_BASE_URL"],
     model_info=model_info
 )
+
+# Persistent mode: wrap with ChatCompletionCache
+if config.get("ALICE_PERSISTENT_MODE"):
+    cache_store = DiskCacheStore(Cache(".alice_cache"))
+    model_client = ChatCompletionCache(openai_model_client, cache_store)
+else:
+    model_client = openai_model_client
 
 planning_agent = AssistantAgent(
     "PlanningAgent",
