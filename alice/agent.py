@@ -29,18 +29,17 @@ openai_model_client = OpenAIChatCompletionClient(
     model_info=model_info
 )
 
-# Persistent mode: wrap with ChatCompletionCache
 if config.get("ALICE_PERSISTENT_MODE"):
     cache_size_bytes = config["ALICE_CACHE_SIZE"] * 1024 * 1024
     cache_store = DiskCacheStore(Cache(ALICE_HOME, size_limit=cache_size_bytes))
-    model_client = ChatCompletionCache(openai_model_client, cache_store)
+    planning_model_client = ChatCompletionCache(openai_model_client, cache_store)
 else:
-    model_client = openai_model_client
+    planning_model_client = openai_model_client
 
 planning_agent = AssistantAgent(
     "PlanningAgent",
     description="An agent for planning command line, this agent should be the first to engage when given a new task.",
-    model_client=model_client,
+    model_client=planning_model_client,
     system_message=f"""
     You are a planning agent.
     Your job is to translate the command you receive into a command line for your {config["ALICE_DEVICE_TYPE"]} desktop.
@@ -64,7 +63,7 @@ else:
     verification_agent = AssistantAgent(
         "VerificationAgent",
         description="An agent for verifying the command line, this agent should be the second to engage when given a new task.",
-        model_client=model_client,
+        model_client=openai_model_client,
         system_message=f"""
         You are a verification agent.
         Your job is to verify the execution result, and judge the result is reasonable or not.
