@@ -1,5 +1,6 @@
 import os
 from autogen_ext.models.openai import OpenAIChatCompletionClient
+from autogen_ext.models.ollama import OllamaChatCompletionClient
 from autogen_core.models import ModelInfo
 from autogen_agentchat.agents import AssistantAgent, CodeExecutorAgent, UserProxyAgent
 from autogen_ext.code_executors.local import LocalCommandLineCodeExecutor
@@ -19,22 +20,30 @@ model_info = ModelInfo(
     family="unknown"
 )
 
-if not config.get("ALICE_API_KEY"):
+if not config.get("ALICE_API_KEY") and not config["ALICE_MODEL"].startswith("ollama:"):
     raise ValueError("Please set ALICE_API_KEY in ~/.alice/.env or environment variables")
 
-openai_model_client = OpenAIChatCompletionClient(
-    model=config["ALICE_MODEL"],
-    api_key=config["ALICE_API_KEY"],
-    base_url=config["ALICE_BASE_URL"],
-    model_info=model_info
-)
+# 根據 model 前綴自動選用 client
+model_name = config["ALICE_MODEL"]
+if model_name.startswith("ollama:"):
+    # e.g. ollama:llama3
+    model = model_name.split(":", 1)[1]
+    base_client = OllamaChatCompletionClient(model=model)
+else:
+    base_client = OpenAIChatCompletionClient(
+        model=model_name,
+        api_key=config["ALICE_API_KEY"],
+        base_url=config["ALICE_BASE_URL"],
+        model_info=model_info
+    )
 
+# Persistent mode: wrap with ChatCompletionCache（只給 planner 用）
 if config.get("ALICE_PERSISTENT_MODE"):
     cache_size_bytes = config["ALICE_CACHE_SIZE"] * 1024 * 1024
     cache_store = DiskCacheStore(Cache(ALICE_HOME, size_limit=cache_size_bytes))
-    planning_model_client = ChatCompletionCache(openai_model_client, cache_store)
+    planning_model_client = ChatCompletionCache(base_client, cache_store)
 else:
-    planning_model_client = openai_model_client
+    planning_model_client = base_client
 
 planning_agent = AssistantAgent(
     "PlanningAgent",
@@ -63,7 +72,7 @@ else:
     verification_agent = AssistantAgent(
         "VerificationAgent",
         description="An agent for verifying the command line, this agent should be the second to engage when given a new task.",
-        model_client=openai_model_client,
+        model_client=base_client,
         system_message=f"""
         You are a verification agent.
         Your job is to verify the execution result, and judge the result is reasonable or not.

@@ -85,6 +85,30 @@ Supported variables:
 
 ---
 
+## Using Ollama Models
+
+Alice supports running local LLMs via [Ollama](https://ollama.com/). To use an Ollama model, simply set the `ALICE_MODEL` variable to a value prefixed with `ollama:` followed by your model name. For example:
+
+```ini
+ALICE_MODEL=ollama:llama3
+```
+
+This tells Alice to use the local Ollama server and the specified model (e.g., `llama3`).
+
+**Requirements:**
+- Make sure you have [Ollama](https://ollama.com/) installed and running on your machine.
+- The Python dependency `autogen-ext[ollama]` must be installed (already included if you follow the default setup).
+
+**Example:**
+
+```ini
+ALICE_MODEL=ollama:llama3
+```
+
+No API key or base URL is required for Ollama models.
+
+---
+
 ## Usage
 
 Run Alice with a natural-language instruction. For example:
